@@ -1,17 +1,20 @@
 package sample.cafekiosk.unit;
 
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import sample.cafekiosk.unit.Beverages.Americano;
 import sample.cafekiosk.unit.Beverages.Latte;
+import sample.cafekiosk.unit.Beverages.order.Order;
+
+import java.time.LocalDateTime;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
-import static org.junit.jupiter.api.Assertions.*;
 
 class CafeKioskTest {
 
     @Test
-    void menual_test_add(){
+    void menual_test_add() {
         CafeKiosk cafeKiosk = new CafeKiosk();
         cafeKiosk.add(new Americano());
 
@@ -20,7 +23,9 @@ class CafeKioskTest {
     }
 
     @Test
-    void add(){
+//    @DisplayName("음료 1개 추가 테스트")
+    @DisplayName("음료 1개를 추가하면 주문 목록에 담긴다.") // 더 명확하게
+    void add() {
         CafeKiosk cafeKiosk = new CafeKiosk();
         cafeKiosk.add(new Americano());
 
@@ -29,7 +34,7 @@ class CafeKioskTest {
     }
 
     @Test
-    void addSeveralBeverages(){
+    void addSeveralBeverages() {
         CafeKiosk cafeKiosk = new CafeKiosk();
         Americano americano = new Americano();
         cafeKiosk.add(americano, 2);
@@ -39,7 +44,7 @@ class CafeKioskTest {
     }
 
     @Test
-    void addZaroBeverages(){
+    void addZaroBeverages() {
         CafeKiosk cafeKiosk = new CafeKiosk();
         Americano americano = new Americano();
 
@@ -49,7 +54,7 @@ class CafeKioskTest {
     }
 
     @Test
-    void remove(){
+    void remove() {
         CafeKiosk cafeKiosk = new CafeKiosk();
         Americano americano = new Americano();
         cafeKiosk.add(americano);
@@ -61,7 +66,7 @@ class CafeKioskTest {
     }
 
     @Test
-    void clear(){
+    void clear() {
         CafeKiosk cafeKiosk = new CafeKiosk();
         Americano americano = new Americano();
         Latte latte = new Latte();
@@ -72,4 +77,51 @@ class CafeKioskTest {
         cafeKiosk.clear();
         assertThat(cafeKiosk.getBeverages()).isEmpty();
     }
+
+    @Test
+    void calculateTotalPrice(){
+        CafeKiosk cafeKiosk = new CafeKiosk();
+        Americano americano = new Americano();
+        Latte latte = new Latte();
+
+        cafeKiosk.add(americano);
+        cafeKiosk.add(latte);
+
+        int totalPrice = cafeKiosk.calculateTotalPrice();
+
+        assertThat(totalPrice).isEqualTo(8500);
+    }
+
+//    @Test
+//    void createOrder() {
+//        CafeKiosk cafeKiosk = new CafeKiosk();
+//        Americano americano = new Americano();
+//        cafeKiosk.add(americano);
+//        Order order = cafeKiosk.createOrder();
+//        assertThat(order.getBeverages().get(0).getName()).isEqualTo("아메리카노");
+//    }
+
+    @Test
+    void createOrderWithCurrentTime() {
+        CafeKiosk cafeKiosk = new CafeKiosk();
+        Americano americano = new Americano();
+        cafeKiosk.add(americano);
+
+        Order order = cafeKiosk.createOrder(LocalDateTime.of(2023, 1, 17, 10, 0));
+
+        assertThat(order.getBeverages().get(0).getName()).isEqualTo("아메리카노");
+    }
+
+    @Test
+    void createOrderOutSideOpenTime() {
+        CafeKiosk cafeKiosk = new CafeKiosk();
+        Americano americano = new Americano();
+        cafeKiosk.add(americano);
+
+        assertThatThrownBy(()->cafeKiosk.createOrder(LocalDateTime.of(2023, 1, 17, 9,  59)) )
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("주문 시간이 아닙니다. 관리자에게 문의하세요");
+    }
+
+
 }
