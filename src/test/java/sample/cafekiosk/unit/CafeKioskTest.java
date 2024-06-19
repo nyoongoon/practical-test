@@ -65,6 +65,26 @@ class CafeKioskTest {
         assertThat(cafeKiosk.getBeverages()).isEmpty();
     }
 
+    @DisplayName("주문 목록에 담긴 상품들의 총 금액을 계산할 수 있다")
+    @Test
+    void calculateTotalPrice(){
+        // given
+        CafeKiosk cafeKiosk = new CafeKiosk();
+        Americano americano = new Americano();
+        Latte latte = new Latte();
+
+        cafeKiosk.add(americano);
+        cafeKiosk.add(latte);
+
+        // then
+        int totalPrice = cafeKiosk.calculateTotalPrice();
+
+        // when
+        assertThat(totalPrice).isEqualTo(8500);
+    }
+
+
+
     @Test
     void clear() {
         CafeKiosk cafeKiosk = new CafeKiosk();
@@ -76,20 +96,6 @@ class CafeKioskTest {
 
         cafeKiosk.clear();
         assertThat(cafeKiosk.getBeverages()).isEmpty();
-    }
-
-    @Test
-    void calculateTotalPrice(){
-        CafeKiosk cafeKiosk = new CafeKiosk();
-        Americano americano = new Americano();
-        Latte latte = new Latte();
-
-        cafeKiosk.add(americano);
-        cafeKiosk.add(latte);
-
-        int totalPrice = cafeKiosk.calculateTotalPrice();
-
-        assertThat(totalPrice).isEqualTo(8500);
     }
 
 //    @Test
