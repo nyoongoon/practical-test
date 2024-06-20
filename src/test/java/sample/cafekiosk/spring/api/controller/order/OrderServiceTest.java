@@ -53,6 +53,38 @@ class OrderServiceTest {
                         tuple("001", 1000),
                         tuple("002", 3000)
                 );
+    }
+
+    /**
+     * where in 절에 중복 조건 들어가도 반환값은 중복없이 나온다.
+     */
+    @DisplayName("중복되는 상품번호 리스트로 주문을 생성할 수 있다..")
+    @Test
+    void createOrderWithDuplicatedPuductsNumbers() {
+        // given
+        Product product1 = createProduct(HANDMADE, "001", 1000);
+        Product product2 = createProduct(HANDMADE, "002", 3000);
+        Product product3 = createProduct(HANDMADE, "003", 5000);
+        productRepository.saveAll(List.of(product1, product2, product3));
+
+        OrderCreateRequest request = OrderCreateRequest.builder()
+                .productNumbers(List.of("001", "001"))
+                .build();
+        LocalDateTime registeredDateTime = LocalDateTime.now();
+        //when
+        OrderResponse orderResponse = orderService.createOrder(request, registeredDateTime);
+
+        //then
+        assertThat(orderResponse.getId()).isNotNull(); // id는 isNotNull로 충분..
+        assertThat(orderResponse)
+                .extracting("registeredDateTime", "totalPrice")
+                .contains(registeredDateTime, 2000);
+        assertThat(orderResponse.getProducts()).hasSize(2)
+                .extracting("productNumber", "price")
+                .containsExactlyInAnyOrder(
+                        tuple("001", 1000),
+                        tuple("001", 1000)
+                );
 
     }
 
