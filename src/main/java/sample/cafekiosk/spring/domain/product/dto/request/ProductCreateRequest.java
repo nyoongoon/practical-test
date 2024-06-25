@@ -2,11 +2,13 @@ package sample.cafekiosk.spring.domain.product.dto.request;
 
 import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import sample.cafekiosk.spring.domain.product.Product;
 import sample.cafekiosk.spring.domain.product.ProductSellingStatus;
 import sample.cafekiosk.spring.domain.product.ProductType;
 
 @Getter
+@NoArgsConstructor // objectMapper가 사용
 public class ProductCreateRequest {
 
     private ProductType type;
