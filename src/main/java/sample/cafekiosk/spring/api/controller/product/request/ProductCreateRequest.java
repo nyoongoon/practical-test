@@ -11,6 +11,10 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Positive;
 
+/**
+ * 강의에서는 requestDto의 각 파라미터에 대한 모든 검증 test 메서드를 작성함.. -> 너무 많지 않나..?
+ * --> 컨트롤러 테스트에서 진행
+ */
 @Getter
 @NoArgsConstructor // objectMapper가 사용
 public class ProductCreateRequest {
@@ -19,13 +23,13 @@ public class ProductCreateRequest {
      * 검증에서 에러가 발생했을 때도 ApiResponse처럼 규격화된 응답을 보내야함
      * -> 에러발생 시 BindException -> ExceptionHandler 핸들링 추가하기..
      */
-    @NotNull
+    @NotNull(message = "상품 타입은 필수입니다.")
     private ProductType type;
-    @NotNull
+    @NotNull(message = "상품 판매 상태는 필수입니다.")
     private ProductSellingStatus sellingStatus;
-    @NotBlank
+    @NotBlank(message = "상품 이름은 필수입니다.")
     private String name;
-    @Positive
+    @Positive(message = "상품 가격은 양수여야합니다.")
     private int price;
 
     @Builder
