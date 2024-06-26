@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.RestController;
 import sample.cafekiosk.spring.api.ApiResponse;
 import sample.cafekiosk.spring.api.controller.product.request.ProductCreateRequest;
 import sample.cafekiosk.spring.api.service.product.ProductService;
-import sample.cafekiosk.spring.api.service.product.response.ProductResponse;
+import sample.cafekiosk.spring.api.controller.product.response.ProductResponse;
 
 import javax.validation.Valid;
 import java.util.List;
@@ -20,13 +20,13 @@ public class ProductController {
 
     @PostMapping("/api/v1/products/new")
     public ApiResponse<ProductResponse> createProduct(@Valid @RequestBody ProductCreateRequest request) {
-        ProductResponse productResponse = productService.createProduct(request);
+        ProductResponse productResponse = productService.createProduct(request.toServiceRequest());
         System.out.println(productResponse);
         return ApiResponse.ok(productResponse);
     }
 
     @GetMapping("/api/v1/products/selling")
-    public List<ProductResponse> getSellingProducts() {
-        return productService.getSellingProducts();
+    public ApiResponse<List<ProductResponse>> getSellingProducts() {
+        return ApiResponse.ok(productService.getSellingProducts());
     }
 }

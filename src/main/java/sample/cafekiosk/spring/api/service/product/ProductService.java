@@ -3,7 +3,8 @@ package sample.cafekiosk.spring.api.service.product;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import sample.cafekiosk.spring.api.service.product.response.ProductResponse;
+import sample.cafekiosk.spring.api.controller.product.response.ProductResponse;
+import sample.cafekiosk.spring.api.service.product.request.ProductCreateServiceRequest;
 import sample.cafekiosk.spring.domain.product.Product;
 import sample.cafekiosk.spring.domain.product.ProductRepository;
 import sample.cafekiosk.spring.domain.product.ProductSellingStatus;
@@ -32,7 +33,7 @@ public class ProductService {
      * 동시성 이슈 고려 필요.. -> 유니크 제약조건 혹은 UUID 등..
      */
     @Transactional
-    public ProductResponse createProduct(ProductCreateRequest request) {
+    public ProductResponse createProduct(ProductCreateServiceRequest request) {
         //productNumber 부여..
         String nextProductNumber = createNextProductNumber();
         // nextProductNumber..
