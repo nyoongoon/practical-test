@@ -7,7 +7,7 @@ import sample.cafekiosk.spring.api.service.product.response.ProductResponse;
 import sample.cafekiosk.spring.domain.product.Product;
 import sample.cafekiosk.spring.domain.product.ProductRepository;
 import sample.cafekiosk.spring.domain.product.ProductSellingStatus;
-import sample.cafekiosk.spring.domain.product.dto.request.ProductCreateRequest;
+import sample.cafekiosk.spring.api.controller.product.request.ProductCreateRequest;
 
 import java.util.List;
 import java.util.stream.Collectors;

@@ -1,4 +1,4 @@
-package sample.cafekiosk.spring.domain.product.dto.request;
+package sample.cafekiosk.spring.api.controller.product.request;
 
 import lombok.Builder;
 import lombok.Getter;
@@ -7,13 +7,25 @@ import sample.cafekiosk.spring.domain.product.Product;
 import sample.cafekiosk.spring.domain.product.ProductSellingStatus;
 import sample.cafekiosk.spring.domain.product.ProductType;
 
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Positive;
+
 @Getter
 @NoArgsConstructor // objectMapper가 사용
 public class ProductCreateRequest {
 
+    /**
+     * 검증에서 에러가 발생했을 때도 ApiResponse처럼 규격화된 응답을 보내야함
+     * -> 에러발생 시 BindException -> ExceptionHandler 핸들링 추가하기..
+     */
+    @NotNull
     private ProductType type;
+    @NotNull
     private ProductSellingStatus sellingStatus;
+    @NotBlank
     private String name;
+    @Positive
     private int price;
 
     @Builder
