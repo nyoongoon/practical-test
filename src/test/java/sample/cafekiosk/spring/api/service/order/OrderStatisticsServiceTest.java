@@ -9,7 +9,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import sample.cafekiosk.spring.client.MailSendClient;
 import sample.cafekiosk.spring.domain.history.mail.MailSendHistory;
-import sample.cafekiosk.spring.domain.history.mail.MailSendRepository;
+import sample.cafekiosk.spring.domain.history.mail.MailSendHistoryRepository;
 import sample.cafekiosk.spring.domain.order.Order;
 import sample.cafekiosk.spring.domain.order.OrderRepository;
 import sample.cafekiosk.spring.domain.order.OrderStatus;
@@ -37,7 +37,7 @@ class OrderStatisticsServiceTest {
     @Autowired
     private ProductRepository productRepository;
     @Autowired
-    private MailSendRepository mailSendRepository;
+    private MailSendHistoryRepository mailSendHistoryRepository;
     @Autowired
     private OrderProductRepository orderProductRepository;
 
@@ -49,7 +49,7 @@ class OrderStatisticsServiceTest {
         orderProductRepository.deleteAllInBatch();
         orderRepository.deleteAllInBatch();
         productRepository.deleteAllInBatch();
-        mailSendRepository.deleteAllInBatch();
+        mailSendHistoryRepository.deleteAllInBatch();
     }
 
     @Test
@@ -84,7 +84,7 @@ class OrderStatisticsServiceTest {
         //then
         assertThat(result).isTrue();
 
-        List<MailSendHistory> histories = mailSendRepository.findAll();
+        List<MailSendHistory> histories = mailSendHistoryRepository.findAll();
         assertThat(histories).hasSize(1)
                 .extracting("content")
                 .contains("총 매출 합계는 12000원입니다.");
