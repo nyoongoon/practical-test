@@ -10,7 +10,6 @@ import javax.persistence.*;
 
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@Table(name = "orders")
 @Entity
 public class MailSendHistory extends BaseEntity {
     @Id
