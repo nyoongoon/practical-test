@@ -17,10 +17,10 @@ import static org.mockito.Mockito.doReturn;
 @ExtendWith(MockitoExtension.class)
 class MailServiceTest {
 
-    //    @Mock //@ExtendWith(MockitoExtension.class) 필요.
-//    private MailSendClient mailSendClient;
-    @Spy // 특정 기능은 실제 기능으로 사용하고 싶을 때 -> 실제 객체 기반
+    @Mock //@ExtendWith(MockitoExtension.class) 필요.
     private MailSendClient mailSendClient;
+//    @Spy // 특정 기능은 실제 기능으로 사용하고 싶을 때 -> 실제 객체 기반
+//    private MailSendClient mailSendClient;
 
     @Mock
     private MailSendHistoryRepository mailSendHistoryRepository;

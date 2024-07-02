@@ -119,11 +119,11 @@ class OrderServiceTest extends IntegrationTestSupport {
         Product product1 = createProduct(BOTTLE, "001", 1000);
         Product product2 = createProduct(BAKERY, "002", 3000);
         Product product3 = createProduct(HANDMADE, "003", 5000);
-        productRepository.saveAll(List.of(product1, product2, product3));
+        productRepository.saveAll(List.of(product1, product2, product3)); // 상품 3개
 
         Stock stock1 = Stock.create("001", 2);
         Stock stock2 = Stock.create("002", 2);
-        stockRepository.saveAll(List.of(stock1, stock2));
+        stockRepository.saveAll(List.of(stock1, stock2)); // 재고 2개 씩
 
         OrderCreateRequest request = OrderCreateRequest.builder()
                 .productNumbers(List.of("001", "001", "002", "003"))
@@ -149,7 +149,7 @@ class OrderServiceTest extends IntegrationTestSupport {
 
         List<Stock> stocks = stockRepository.findAll();
         assertThat(stocks)
-                .hasSize(4)
+                .hasSize(2) // 남은 재고
                 .extracting("productNumber", "quantity")
                 .containsExactlyInAnyOrder(
                         tuple("001", 0),

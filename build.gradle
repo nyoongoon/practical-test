@@ -2,6 +2,7 @@ plugins {
     id 'java'
     id 'org.springframework.boot' version '2.7.7'
     id 'io.spring.dependency-management' version '1.0.15.RELEASE'
+    id 'org.asciidoctor.jvm.convert' version '3.3.2' //asciidoc -> html 플러그인 추가
 }
 
 group = 'sample'
@@ -12,6 +13,7 @@ configurations {
     compileOnly {
         extendsFrom annotationProcessor
     }
+    asciidoctorExt //RestDocs
 }
 
 repositories {
@@ -35,10 +37,41 @@ dependencies {
     //h2
     runtimeOnly 'com.h2database:h2'
 
-    // Guava
+    //Guava
     implementation 'com.google.guava:guava:31.1-jre'
+
+    //RestDocs
+    asciidoctorExt 'org.springframework.restdocs:spring-restdocs-asciidoctor'
+    testImplementation 'org.springframework.restdocs:spring-restdocs-mockmvc'
 }
 
 tasks.named('test') {
     useJUnitPlatform()
+}
+
+/* asciidoc 설정 */
+ext { //전역변수 선언
+    snippetsDir = file('build/generated-snippets') //스니펫 디렉토리 정의
+}
+
+test { //test 태스크 -> 테스트가 끝난 결과물을 스니펫 경로에 지정해줌
+    outputs.dir snippetsDir
+}
+
+asciidoctor {
+    inputs.dir snippetsDir
+    configurations 'asciidoctorExt'
+
+    sources{ //특정 파일만 html로 만든
+        include("**/index.adoc")
+    }
+    baseDirFollowsSourceDir() // 다른 adoc 파일을 include할 때 경로를 baseDir로 맞춘다
+    dependsOn test //dependsOn -> 작업 순서 --> test 끝나고 이 작업 실행
+}
+
+bootJar {
+    dependsOn asciidoctor
+    from("${asciidoctor.outputDir}") { //생성된 정적파일을 static/docs로 이동
+        into 'static/docs'
+    }
 }
