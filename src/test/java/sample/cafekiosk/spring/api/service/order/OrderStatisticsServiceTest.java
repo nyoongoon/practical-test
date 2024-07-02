@@ -7,6 +7,7 @@ import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import sample.cafekiosk.spring.IntegrationTestSupport;
 import sample.cafekiosk.spring.client.MailSendClient;
 import sample.cafekiosk.spring.domain.history.mail.MailSendHistory;
 import sample.cafekiosk.spring.domain.history.mail.MailSendHistoryRepository;
@@ -27,9 +28,9 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
 import static sample.cafekiosk.spring.domain.product.ProductType.*;
 
-@SpringBootTest
+//@SpringBootTest
 //@Transactional
-class OrderStatisticsServiceTest {
+class OrderStatisticsServiceTest extends IntegrationTestSupport {
     @Autowired
     private OrderStatisticsService orderStatisticsService;
     @Autowired
@@ -41,8 +42,11 @@ class OrderStatisticsServiceTest {
     @Autowired
     private OrderProductRepository orderProductRepository;
 
-    @MockBean
-    private MailSendClient mailSendClient;
+    /**
+     * 테스트 환경 통합을 위해 상위 클래스에 선언함
+     */
+//    @MockBean
+//    private MailSendClient mailSendClient;
 
     @AfterEach
     void tearDown() {

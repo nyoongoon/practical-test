@@ -1,14 +1,12 @@
-package sample.cafekiosk.spring.api.controller.order;
+package sample.cafekiosk.spring.api.service.order;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.ActiveProfiles;
 import org.springframework.transaction.annotation.Transactional;
+import sample.cafekiosk.spring.IntegrationTestSupport;
 import sample.cafekiosk.spring.api.controller.order.request.OrderCreateRequest;
 import sample.cafekiosk.spring.api.controller.order.response.OrderResponse;
-import sample.cafekiosk.spring.api.service.order.OrderService;
 import sample.cafekiosk.spring.domain.order.OrderRepository;
 import sample.cafekiosk.spring.domain.orderproduct.OrderProductRepository;
 import sample.cafekiosk.spring.domain.product.Product;
@@ -24,8 +22,8 @@ import static org.assertj.core.api.Assertions.*;
 import static sample.cafekiosk.spring.domain.product.ProductSellingStatus.SELLING;
 import static sample.cafekiosk.spring.domain.product.ProductType.*;
 
-@ActiveProfiles("test")
-@SpringBootTest
+//@ActiveProfiles("test")
+//@SpringBootTest
 /**
  * 테스트 @Transactional 어노테이션 주의해서 사용하기
  * -> 실제 서비스단에 트랜잭션 경계설정이 없어도 있는 것처럼 작동함 주의 ! -> 잘 알고 쓰기!
@@ -33,7 +31,7 @@ import static sample.cafekiosk.spring.domain.product.ProductType.*;
  * -> SimpleJpaRepository#save() 메소드 구현 내부에서 @Transactional이 걸려있다!
  */
 @Transactional
-class OrderServiceTest {
+class OrderServiceTest extends IntegrationTestSupport {
     @Autowired
     private OrderService orderService;
     @Autowired
