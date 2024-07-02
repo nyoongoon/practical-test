@@ -6,6 +6,7 @@ import org.springframework.transaction.annotation.Transactional;
 import sample.cafekiosk.spring.api.controller.product.response.ProductResponse;
 import sample.cafekiosk.spring.api.service.product.request.ProductCreateServiceRequest;
 import sample.cafekiosk.spring.domain.product.Product;
+import sample.cafekiosk.spring.domain.product.ProductNumberFactory;
 import sample.cafekiosk.spring.domain.product.ProductRepository;
 import sample.cafekiosk.spring.domain.product.ProductSellingStatus;
 import sample.cafekiosk.spring.api.controller.product.request.ProductCreateRequest;
@@ -28,6 +29,7 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class ProductService {
     private final ProductRepository productRepository;
+    private final ProductNumberFactory productNumberFactory;
 
     /**
      * 동시성 이슈 고려 필요.. -> 유니크 제약조건 혹은 UUID 등..
@@ -35,7 +37,7 @@ public class ProductService {
     @Transactional
     public ProductResponse createProduct(ProductCreateServiceRequest request) {
         //productNumber 부여..
-        String nextProductNumber = createNextProductNumber();
+        String nextProductNumber = productNumberFactory.createNextProductNumber();
         // nextProductNumber..
 
         Product product = request.toEntity(nextProductNumber);
@@ -53,15 +55,19 @@ public class ProductService {
                 .collect(Collectors.toList());
     }
 
-    private String createNextProductNumber() {
-        String latestProductNumber = productRepository.findLatestProductNumber();
-        if (latestProductNumber == null) {
-            return "001";
-        }
-
-        int latestProductNumberInt = Integer.parseInt(latestProductNumber);
-        int nextProductNumberInt = latestProductNumberInt + 1;
-
-        return String.format("%03d", nextProductNumberInt);
-    }
+    /**
+     * private 메서드 -> 객체 분리 시점 고려 -> ProductNubmerFactory로 이동
+     * @return
+     */
+//    private String createNextProductNumber() {
+//        String latestProductNumber = productRepository.findLatestProductNumber();
+//        if (latestProductNumber == null) {
+//            return "001";
+//        }
+//
+//        int latestProductNumberInt = Integer.parseInt(latestProductNumber);
+//        int nextProductNumberInt = latestProductNumberInt + 1;
+//
+//        return String.format("%03d", nextProductNumberInt);
+//    }
 }
